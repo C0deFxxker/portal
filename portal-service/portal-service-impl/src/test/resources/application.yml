@@ -1,0 +1,12 @@
+spring:
+  data:
+    mongodb:
+      # 单机
+      uri: mongodb://root:root@localhost:27017/test
+      # 集群
+#      uri: mongodb://user:pwd@ip1:port1,ip2:port2/database
+
+logging:
+  level:
+    com.lyl.study.portal: DEBUG
+    org.springframework.data.mongodb: DEBUG
