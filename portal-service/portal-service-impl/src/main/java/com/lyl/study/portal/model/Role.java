@@ -1,8 +1,9 @@
-package com.lyl.study.portal.dto.response;
+package com.lyl.study.portal.model;
 
 import lombok.Data;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -10,43 +11,32 @@ import java.util.Date;
 @Data
 @ToString
 @Accessors(chain = true)
-public class UserInfoDto implements Serializable {
+@Document
+public class Role implements Serializable {
     /**
-     * 用户ID
+     * 主键
      */
     private String id;
     /**
-     * 用户名
+     * 角色名称
      */
     private String name;
     /**
-     * 用户编码
+     * 角色编码
      */
     private String code;
     /**
-     * 用户密码
+     * 是否为管理员角色（管理员角色不允许修改和删除）
      */
-    private String password;
+    private Boolean admin;
     /**
-     * 手机号
+     * 逻辑删除
      */
-    private String phone;
+    private Boolean deleted;
     /**
-     * 电子邮箱
+     * 创建者ID
      */
-    private String email;
-    /**
-     * 联系地址
-     */
-    private String address;
-    /**
-     * 备注
-     */
-    private String memo;
-    /**
-     * 用户是否锁定
-     */
-    private Boolean locked;
+    private String creatorId;
     /**
      * 创建时间
      */

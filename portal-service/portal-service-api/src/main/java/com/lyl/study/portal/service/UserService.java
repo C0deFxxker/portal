@@ -16,4 +16,10 @@ public interface UserService {
     Mono<UserInfoDto> getById(String id);
 
     Mono<PageInfo<UserInfoDto>> page(String nameOrCodeLike, int pageIndex, int pageSize);
+
+    Mono<Void> updatePassword(String id, String newPassword);
+
+    Mono<Void> lock(String id);
+
+    Mono<Void> unlock(String id);
 }

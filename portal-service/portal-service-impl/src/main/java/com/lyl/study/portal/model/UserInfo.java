@@ -3,7 +3,6 @@ package com.lyl.study.portal.model;
 import lombok.Data;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
@@ -17,7 +16,6 @@ public class UserInfo implements Serializable {
     /**
      * 用户ID
      */
-    @Id
     private String id;
     /**
      * 用户名
@@ -52,9 +50,13 @@ public class UserInfo implements Serializable {
      */
     private Boolean deleted;
     /**
-     * 用户是否锁定
+     * 用户是否锁定(锁定的用户不能登录)
      */
     private Boolean locked;
+    /**
+     * 创建者ID
+     */
+    private String creatorId;
     /**
      * 创建时间
      */

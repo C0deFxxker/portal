@@ -10,43 +10,31 @@ import java.util.Date;
 @Data
 @ToString
 @Accessors(chain = true)
-public class UserInfoDto implements Serializable {
+public class RoleDto implements Serializable {
     /**
-     * 用户ID
+     * 主键
      */
     private String id;
     /**
-     * 用户名
+     * 角色名称
      */
     private String name;
     /**
-     * 用户编码
+     * 角色编码
      */
     private String code;
     /**
-     * 用户密码
+     * 是否为管理员角色（管理员角色不允许修改和删除）
      */
-    private String password;
-    /**
-     * 手机号
-     */
-    private String phone;
-    /**
-     * 电子邮箱
-     */
-    private String email;
-    /**
-     * 联系地址
-     */
-    private String address;
+    private Boolean admin;
     /**
      * 备注
      */
-    private String memo;
+    private String comments;
     /**
-     * 用户是否锁定
+     * 创建者ID
      */
-    private Boolean locked;
+    private String creatorId;
     /**
      * 创建时间
      */

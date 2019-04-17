@@ -1,6 +1,7 @@
 package com.lyl.study.portal.service.impl;
 
 import com.lyl.study.portal.common.dto.PageInfo;
+import com.lyl.study.portal.common.encoder.PasswordEncoder;
 import com.lyl.study.portal.dto.request.UserSaveRequest;
 import com.lyl.study.portal.dto.request.UserUpdateRequest;
 import com.lyl.study.portal.dto.response.UserInfoDto;
@@ -27,6 +28,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private ReactiveMongoTemplate mongoTemplate;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Mono<UserInfoDto> save(UserSaveRequest request) {
@@ -53,6 +56,7 @@ public class UserServiceImpl implements UserService {
                 .switchIfEmpty(Mono.error(new IllegalArgumentException("找不到ID为" + request.getId() + "的用户")))
                 .flatMap(userInfo -> {
                     BeanUtils.copyProperties(request, userInfo);
+                    userInfo.setUpdateTime(new Date());
                     return userRepository.save(userInfo);
                 }).then();
     }
@@ -64,6 +68,7 @@ public class UserServiceImpl implements UserService {
                 .filter(userInfo -> userInfo != null && !Objects.equals(Boolean.TRUE, userInfo.getDeleted()))
                 .flatMap(userInfo -> {
                     userInfo.setDeleted(true);
+                    userInfo.setUpdateTime(new Date());
                     return userRepository.save(userInfo);
                 }).then();
     }
@@ -103,5 +108,43 @@ public class UserServiceImpl implements UserService {
                     return dto;
                 }).buffer()),
                 (total, userInfoList) -> new PageInfo<>(pageIndex, pageSize, total, userInfoList));
+    }
+
+    @Override
+    public Mono<Void> updatePassword(String id, String newPassword) {
+        log.info("修改用户密码: id={}", id);
+
+        return userRepository.findById(id)
+                .filter(userInfo -> userInfo != null && !Objects.equals(Boolean.TRUE, userInfo.getDeleted()))
+                .switchIfEmpty(Mono.error(new IllegalArgumentException("找不到ID为" + id + "的用户")))
+                .flatMap(userInfo -> {
+                    userInfo.setPassword(passwordEncoder.encode(newPassword));
+                    userInfo.setUpdateTime(new Date());
+                    return userRepository.save(userInfo);
+                }).then();
+    }
+
+    @Override
+    public Mono<Void> lock(String id) {
+        return userRepository.findById(id)
+                .filter(userInfo -> userInfo != null && !Objects.equals(Boolean.TRUE, userInfo.getDeleted()))
+                .switchIfEmpty(Mono.error(new IllegalArgumentException("找不到ID为" + id + "的用户")))
+                .flatMap(userInfo -> {
+                    userInfo.setLocked(true);
+                    userInfo.setUpdateTime(new Date());
+                    return userRepository.save(userInfo);
+                }).then();
+    }
+
+    @Override
+    public Mono<Void> unlock(String id) {
+        return userRepository.findById(id)
+                .filter(userInfo -> userInfo != null && !Objects.equals(Boolean.TRUE, userInfo.getDeleted()))
+                .switchIfEmpty(Mono.error(new IllegalArgumentException("找不到ID为" + id + "的用户")))
+                .flatMap(userInfo -> {
+                    userInfo.setLocked(false);
+                    userInfo.setUpdateTime(new Date());
+                    return userRepository.save(userInfo);
+                }).then();
     }
 }
