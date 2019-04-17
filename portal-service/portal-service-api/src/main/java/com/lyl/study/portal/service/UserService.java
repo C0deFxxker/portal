@@ -15,5 +15,5 @@ public interface UserService {
 
     Mono<UserInfoDto> getById(String id);
 
-    Mono<PageInfo<UserInfoDto>> page(int pageIndex, int pageSize);
+    Mono<PageInfo<UserInfoDto>> page(String nameOrCodeLike, int pageIndex, int pageSize);
 }

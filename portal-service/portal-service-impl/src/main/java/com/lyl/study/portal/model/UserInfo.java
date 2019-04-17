@@ -3,7 +3,6 @@ package com.lyl.study.portal.model;
 import lombok.Data;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.mongodb.morphia.annotations.Entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,7 +13,6 @@ import java.util.Date;
 @ToString
 @Accessors(chain = true)
 @Document
-@Entity
 public class UserInfo implements Serializable {
     /**
      * 用户ID

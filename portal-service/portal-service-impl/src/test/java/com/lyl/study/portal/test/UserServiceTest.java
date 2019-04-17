@@ -84,17 +84,19 @@ public class UserServiceTest {
             userService.save(request).block();
         }
 
-        Mono<PageInfo<UserInfoDto>> pageMono = userService.page(1, pageSize);
+        final String nameOrCodeLike = "-1";
+        Mono<PageInfo<UserInfoDto>> pageMono = userService.page(nameOrCodeLike, 1, pageSize);
         StepVerifier
                 .create(pageMono)
                 .assertNext(pageInfo -> {
                     Assert.isTrue(pageInfo.getTotal() >= num, "total值错误");
-                    Assert.isTrue(pageInfo.getList().size() == pageSize, "list元素数目不正确");
+                    Assert.isTrue(pageInfo.getList().size() > 0, "list元素数目不正确");
                     pageInfo.getList().forEach(e -> {
                         Assert.notNull(e.getId(), "id为空");
                         Assert.notNull(e.getName(), "name为空");
                         Assert.notNull(e.getCode(), "code为空");
                         Assert.notNull(e.getPassword(), "password为空");
+                        Assert.isTrue(e.getName().contains(nameOrCodeLike) || e.getCode().contains(nameOrCodeLike), "nameOrCodeLike查询不正确");
                     });
                 })
                 .expectComplete()

@@ -10,19 +10,23 @@ import com.lyl.study.portal.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.util.Date;
 import java.util.Objects;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ReactiveMongoTemplate mongoTemplate;
 
     @Override
     public Mono<UserInfoDto> save(UserSaveRequest request) {
@@ -83,19 +87,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Mono<PageInfo<UserInfoDto>> page(int pageIndex, int pageSize) {
+    public Mono<PageInfo<UserInfoDto>> page(String nameOrCodeLike, int pageIndex, int pageSize) {
         if (log.isDebugEnabled()) {
-            log.debug("分页获取用户列表: pageIndex={}, pageSize={}", pageIndex, pageSize);
+            log.debug("分页获取用户列表: nameOrCodeLike={}, pageIndex={}, pageSize={}", pageIndex, pageSize);
         }
 
-        // 查询未删除的用户
-        UserInfo user = new UserInfo();
-        user.setDeleted(false);
-        Example<UserInfo> userInfoExample = Example.of(user);
+        Query query = new Query(where("deleted").is(Boolean.FALSE)
+                .orOperator(where("name").regex(nameOrCodeLike, "i"), where("code").regex(nameOrCodeLike, "i")));
 
         return Mono.zip(
-                userRepository.count(userInfoExample),
-                Mono.from(userRepository.findUsersPaged(PageRequest.of(pageIndex, pageSize)).map(userInfo -> {
+                mongoTemplate.count(query, UserInfo.class),
+                Mono.from(mongoTemplate.find(query.skip(pageIndex * pageSize).limit(pageSize), UserInfo.class).map(userInfo -> {
                     UserInfoDto dto = new UserInfoDto();
                     BeanUtils.copyProperties(userInfo, dto);
                     return dto;
