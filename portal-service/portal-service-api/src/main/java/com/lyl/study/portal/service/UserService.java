@@ -15,9 +15,13 @@ public interface UserService {
 
     Mono<Void> deleteById(String id);
 
+    Mono<Void> deleteByIdList(List<String> idList);
+
     Mono<UserInfoDto> getById(String id);
 
-    Mono<PageInfo<UserInfoDto>> page(String nameOrCodeLike, int pageIndex, int pageSize);
+    Mono<UserInfoDto> getByIdList(List<String> idList);
+
+    Mono<PageInfo<UserInfoDto>> page(String nameOrCodeLike, String tenantId, int pageIndex, int pageSize);
 
     Mono<Void> updatePassword(String id, String newPassword);
 

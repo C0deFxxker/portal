@@ -19,9 +19,13 @@ public interface PortalService {
 
     Mono<Void> deleteById(String id);
 
+    Mono<Void> deleteByIdList(List<String> idList);
+
     Mono<PortalDto> getById(String id);
 
-    Mono<PageInfo<PortalDto>> page(int pageIndex, int pageSize);
+    Mono<List<PortalDto>> getByIdList(List<String> idList);
+
+    Mono<PageInfo<PortalDto>> page(String nameOrCodeLike, String tenantId, int pageIndex, int pageSize);
 
     Mono<PortalDirDto> addDirToPortal(PortalAddDirRequest request);
 

@@ -19,6 +19,10 @@ public class MenuSaveRequest implements Serializable {
      */
     private String name;
     /**
+     * 租户ID
+     */
+    private String tenantId;
+    /**
      * 权限类型：E-权限标识，A-Ant表达式
      */
     private String privType;

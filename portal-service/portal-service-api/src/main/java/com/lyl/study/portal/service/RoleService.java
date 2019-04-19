@@ -16,9 +16,13 @@ public interface RoleService {
 
     Mono<Void> deleteById(String id);
 
+    Mono<Void> deleteByIdList(List<String> idList);
+
     Mono<RoleDto> getById(String id);
 
-    Mono<PageInfo<RoleDto>> page(String nameOrCodeLike, int pageIndex, int pageSize);
+    Mono<List<RoleDto>> getByIdList(List<String> idList);
+
+    Mono<PageInfo<RoleDto>> page(String nameOrCodeLike, String tenantId, int pageIndex, int pageSize);
 
     Mono<Void> addMenuToRole(List<String> menuIdList);
 

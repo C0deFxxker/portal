@@ -10,7 +10,20 @@ import java.io.Serializable;
 @ToString
 @Accessors(chain = true)
 public class PortalSaveRequest implements Serializable {
+    /**
+     * 编码
+     */
     private String code;
+    /**
+     * 名称
+     */
     private String name;
+    /**
+     * 租户ID
+     */
+    private String tenantId;
+    /**
+     * 备注
+     */
     private String comments;
 }

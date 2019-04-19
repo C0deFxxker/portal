@@ -19,6 +19,10 @@ public class RoleSaveRequest implements Serializable {
      */
     private String code;
     /**
+     * 租户ID
+     */
+    private String tenantId;
+    /**
      * 备注
      */
     private String comments;
