@@ -7,31 +7,23 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class UserInfoDto extends BaseDto implements Serializable {
+public class PrivDto extends BaseDto implements Serializable {
     /**
-     * 用户密码
+     * 权限类型：E-权限标识，A-Ant表达式
      */
-    private String password;
+    private String privType;
     /**
-     * 手机号
+     * 权限标识(逗号划分）
+     * 如: system:user:read,system:user:write
      */
-    private String phone;
+    private String privEl;
     /**
-     * 电子邮箱
+     * Ant表达式(逗号分割)
      */
-    private String email;
-    /**
-     * 联系地址
-     */
-    private String address;
-    /**
-     * 用户是否锁定
-     */
-    private Boolean locked;
+    private String privAnt;
 }

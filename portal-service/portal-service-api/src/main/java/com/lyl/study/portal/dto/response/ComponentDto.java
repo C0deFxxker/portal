@@ -1,6 +1,5 @@
 package com.lyl.study.portal.dto.response;
 
-import com.lyl.study.portal.dto.BaseDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -12,9 +11,13 @@ import java.io.Serializable;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class RoleDto extends BaseDto implements Serializable {
+public class ComponentDto extends PrivDto implements Serializable {
     /**
-     * 是否为管理员角色（管理员角色不允许修改和删除）
+     * 菜单ID
      */
-    private Boolean admin;
+    private String menuId;
+    /**
+     * 页面组件ID（Xpath）
+     */
+    private String objectId;
 }

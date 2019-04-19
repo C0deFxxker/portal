@@ -16,29 +16,27 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @Document
-public class Role extends BaseModel implements Serializable {
+public class PortalDir extends BaseModel implements Serializable {
     /**
-     * 是否为管理员角色（管理员角色不允许修改和删除）
+     * 门户ID
      */
-    private Boolean admin;
+    private String portalId;
     /**
-     * 特殊授权
+     * 父目录ID
      */
-    @DBRef(lazy = true)
-    private List<Priv> privsList = new ArrayList<>();
+    private String parentId;
     /**
-     * 授权菜单
+     * 序号
      */
-    @DBRef(lazy = true)
-    private List<Menu> menuList = new ArrayList<>();
+    private Integer sort;
     /**
-     * 授权门户
+     * 子目录
      */
     @DBRef(lazy = true)
-    private List<Portal> portalList = new ArrayList<>();
+    private List<PortalDir> dirList = new ArrayList<>();
     /**
-     * 授权用户
+     * 门户菜单
      */
     @DBRef(lazy = true)
-    private List<UserInfo> userList = new ArrayList<>();
+    private List<PortalMenu> menuList = new ArrayList<>();
 }

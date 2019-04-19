@@ -1,30 +1,22 @@
 package com.lyl.study.portal.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
-@ToString
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @Document
-public class UserInfo implements Serializable {
-    /**
-     * 用户ID
-     */
-    private String id;
-    /**
-     * 用户名
-     */
-    private String name;
-    /**
-     * 用户编码
-     */
-    private String code;
+public class UserInfo extends BaseModel implements Serializable {
     /**
      * 用户密码
      */
@@ -42,27 +34,27 @@ public class UserInfo implements Serializable {
      */
     private String address;
     /**
-     * 备注
-     */
-    private String memo;
-    /**
-     * 用户是否已删除
-     */
-    private Boolean deleted;
-    /**
      * 用户是否锁定(锁定的用户不能登录)
      */
     private Boolean locked;
     /**
-     * 创建者ID
+     * 特殊授权
      */
-    private String creatorId;
+    @DBRef(lazy = true)
+    private List<Priv> privsList = new ArrayList<>();
     /**
-     * 创建时间
+     * 授权菜单
      */
-    private Date createTime;
+    @DBRef(lazy = true)
+    private List<Menu> menuList = new ArrayList<>();
     /**
-     * 修改时间
+     * 授权门户
      */
-    private Date updateTime;
+    @DBRef(lazy = true)
+    private List<Portal> portalList = new ArrayList<>();
+    /**
+     * 授权角色
+     */
+    @DBRef(lazy = true)
+    private List<Role> roleList = new ArrayList<>();
 }

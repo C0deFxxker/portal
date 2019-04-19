@@ -23,6 +23,11 @@ public class UserSaveRequest implements Serializable {
      */
     private String password;
     /**
+     * 租户ID
+     * <p>管理员创建用户才需要指定这个值，否则直接用当前登录的用户tenantId</p>
+     */
+    private String tenantId;
+    /**
      * 手机号
      */
     private String phone;

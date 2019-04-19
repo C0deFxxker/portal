@@ -76,6 +76,8 @@ public class UserServiceTest {
     public void testPage() {
         final int num = 20;
         final int pageSize = 10;
+        final String nameOrCodeLike = "-1";
+
         for (int i = 1; i <= num; i++) {
             UserSaveRequest request = new UserSaveRequest();
             request.setName("test-" + i);
@@ -84,12 +86,11 @@ public class UserServiceTest {
             userService.save(request).block();
         }
 
-        final String nameOrCodeLike = "-1";
         Mono<PageInfo<UserInfoDto>> pageMono = userService.page(nameOrCodeLike, 1, pageSize);
         StepVerifier
                 .create(pageMono)
                 .assertNext(pageInfo -> {
-                    Assert.isTrue(pageInfo.getTotal() >= num, "total值错误");
+                    Assert.isTrue(pageInfo.getTotal() > 0, "total值错误");
                     Assert.isTrue(pageInfo.getList().size() > 0, "list元素数目不正确");
                     pageInfo.getList().forEach(e -> {
                         Assert.notNull(e.getId(), "id为空");
