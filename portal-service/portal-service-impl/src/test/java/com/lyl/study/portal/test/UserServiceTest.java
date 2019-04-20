@@ -86,7 +86,7 @@ public class UserServiceTest {
             userService.save(request).block();
         }
 
-        Mono<PageInfo<UserInfoDto>> pageMono = userService.page(nameOrCodeLike, 1, pageSize);
+        Mono<PageInfo<UserInfoDto>> pageMono = userService.page(nameOrCodeLike, null, 1, pageSize);
         StepVerifier
                 .create(pageMono)
                 .assertNext(pageInfo -> {

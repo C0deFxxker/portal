@@ -4,7 +4,7 @@ import com.lyl.study.portal.common.dto.PageInfo;
 import com.lyl.study.portal.common.encoder.PasswordEncoder;
 import com.lyl.study.portal.dto.request.UserSaveRequest;
 import com.lyl.study.portal.dto.request.UserUpdateRequest;
-import com.lyl.study.portal.dto.response.UserInfoDto;
+import com.lyl.study.portal.dto.response.*;
 import com.lyl.study.portal.model.UserInfo;
 import com.lyl.study.portal.repository.UserRepository;
 import com.lyl.study.portal.service.UserService;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -92,9 +93,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Mono<PageInfo<UserInfoDto>> page(String nameOrCodeLike, int pageIndex, int pageSize) {
+    public Mono<PageInfo<UserInfoDto>> page(String nameOrCodeLike, String tenantId, int pageIndex, int pageSize) {
         if (log.isDebugEnabled()) {
-            log.debug("分页获取用户列表: nameOrCodeLike={}, pageIndex={}, pageSize={}", pageIndex, pageSize);
+            log.debug("分页获取用户列表: nameOrCodeLike={}, tenantId={}, pageIndex={}, pageSize={}",
+                    nameOrCodeLike, tenantId, pageIndex, pageSize);
         }
 
         Query query = new Query(where("deleted").is(Boolean.FALSE)
@@ -146,5 +148,75 @@ public class UserServiceImpl implements UserService {
                     userInfo.setUpdateTime(new Date());
                     return userRepository.save(userInfo);
                 }).then();
+    }
+
+    @Override
+    public Mono<Void> deleteByIdList(List<String> idList) {
+        return null;
+    }
+
+    @Override
+    public Mono<UserInfoDto> getByIdList(List<String> idList) {
+        return null;
+    }
+
+    @Override
+    public Mono<Void> addMenuToUser(List<String> menuIdList) {
+        return null;
+    }
+
+    @Override
+    public Mono<Void> deleteMenuFromUser(List<String> menuIdList) {
+        return null;
+    }
+
+    @Override
+    public Mono<List<MenuDto>> getUserMenusByUserId(String userId) {
+        return null;
+    }
+
+    @Override
+    public Mono<Void> addComponentToUser(List<String> componentIdList) {
+        return null;
+    }
+
+    @Override
+    public Mono<Void> deleteComponentFromUser(List<String> componentIdList) {
+        return null;
+    }
+
+    @Override
+    public Mono<List<ComponentDto>> getUserComponentsByUserId(String userId) {
+        return null;
+    }
+
+    @Override
+    public Mono<Void> addPortalToUser(List<String> portalIdList) {
+        return null;
+    }
+
+    @Override
+    public Mono<Void> deletePortalFromUser(List<String> portalIdList) {
+        return null;
+    }
+
+    @Override
+    public Mono<List<PortalDto>> getUserPortalsByUserId(String userId) {
+        return null;
+    }
+
+    @Override
+    public Mono<Void> addRoleToUser(List<String> roleIdList) {
+        return null;
+    }
+
+    @Override
+    public Mono<Void> deleteRoleFromUser(List<String> roleIdList) {
+        return null;
+    }
+
+    @Override
+    public Mono<List<RoleDto>> getUserRolesByUserId(String userId) {
+        return null;
     }
 }
